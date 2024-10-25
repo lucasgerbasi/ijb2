@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import '@styles/global.scss';
 import '@styles/registro.scss';
-// import { api } from "../../../../api";
-import { useLocation } from 'react-router-dom';
-// import { useAuth } from '../../../services/loginContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/Navbar';
 import { Footer } from '../../../components/Footer';
+import { registerBeneficario } from '../../../services/beneficiaries/beneficiariesApi';
 
 const Registro = () => {
-    const { navigate } = useAuth();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const [nomeFamilia, setNomeFamilia] = useState('');
@@ -17,7 +16,7 @@ const Registro = () => {
     const [cpf, setCpf] = useState('');
     const [endereco, setEndereco] = useState('');
     const [cep, setCep] = useState('');
-    const [rendaMensal, setRendaMensal] = useState('');
+    const [rendaMensal, setRendaMensal] = useState(0);
     const [telefone1, setTelefone1] = useState('');
     const [telefone2, setTelefone2] = useState('');
     const [comoChegou, setComoChegou] = useState('');
@@ -76,10 +75,11 @@ const Registro = () => {
             familiarExtras,
             dadosImovel,
             necessidadeFamilia,
+            status: 'ATIVO',
         };
 
         try {
-            await api.post('/familias', data);
+            await registerBeneficario(data)
             if (location.pathname.includes("dashboard")) {
                 navigate('/dashboard/beneficiarios');
             } else {
@@ -98,7 +98,7 @@ const Registro = () => {
         setCpf('');
         setEndereco('');
         setCep('');
-        setRendaMensal('');
+        setRendaMensal(0);
         setTelefone1('');
         setTelefone2('');
         setComoChegou('');
@@ -166,10 +166,10 @@ const Registro = () => {
 
                     <label>Renda Mensal:</label>
                     <input
-                        type="text"
+                        type="number"
                         placeholder="Renda Mensal"
                         value={rendaMensal}
-                        onChange={(e) => setRendaMensal(e.target.value)}
+                        onChange={(e) => setRendaMensal(Number(e.target.value))}
                     />
 
                     <label>Telefone:</label>

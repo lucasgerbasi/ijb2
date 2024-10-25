@@ -1,19 +1,18 @@
 import '@styles/global.scss';
 import '@styles/atualizarInformacoes.scss';
-// import { api } from "../../../../api";
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
-// import { useAuth } from '../../../services/loginContext';
 import { Navbar } from '../../../components/Navbar';
 import { Footer } from '../../../components/Footer';
+import { getBeneficiario } from '../../../services/beneficiaries/beneficiariesApi';
 
 function isAxiosError(error: unknown): error is AxiosError {
     return (error as AxiosError).isAxiosError !== undefined;
 }
 
 const AtualizarInformacoes = () => {
-    const { navigate } = useAuth();
+    const navigate = useNavigate();
     const { familiaId } = useParams();
 
     const [nomeFamilia, setNomeFamilia] = useState('');
@@ -22,7 +21,7 @@ const AtualizarInformacoes = () => {
     const [cpf, setCpf] = useState('');
     const [endereco, setEndereco] = useState('');
     const [cep, setCep] = useState('');
-    const [rendaMensal, setRendaMensal] = useState('');
+    const [rendaMensal, setRendaMensal] = useState(0);
     const [telefone1, setTelefone1] = useState('');
     const [telefone2, setTelefone2] = useState('');
     const [comoChegou, setComoChegou] = useState('');
@@ -33,8 +32,12 @@ const AtualizarInformacoes = () => {
     useEffect(() => {
         const fetchFamilia = async () => {
             try {
-                const response = await api.get(`/familias/${familiaId}`);
-                const familia = response.data;
+                const familia = await getBeneficiario(Number(familiaId));
+
+                if(!familia) {
+                    console.error("Family data not found (404): Invalid familiaId.");
+                    return;
+                }
 
                 setNomeFamilia(familia.nomeFamilia || "");
                 setStatusFamilia(familia.statusFamilia || "");
@@ -42,7 +45,7 @@ const AtualizarInformacoes = () => {
                 setCpf(familia.cpf || "");
                 setEndereco(familia.endereco || "");
                 setCep(familia.cep || "");
-                setRendaMensal(familia.rendaMensal || "");
+                setRendaMensal(familia.rendaMensal || 0);
                 setTelefone1(familia.telefone1 || "");
                 setTelefone2(familia.telefone2 || "");
                 setComoChegou(familia.comoChegou || "");
@@ -130,7 +133,7 @@ const AtualizarInformacoes = () => {
         setCpf("");
         setEndereco("");
         setCep("");
-        setRendaMensal("");
+        setRendaMensal(0);
         setTelefone1("");
         setTelefone2("");
         setComoChegou("");
@@ -197,9 +200,9 @@ const AtualizarInformacoes = () => {
 
                     <label>Renda Mensal:</label>
                     <input
-                        type="text"
+                        type="number"
                         value={rendaMensal}
-                        onChange={(e) => setRendaMensal(e.target.value)}
+                        onChange={(e) => setRendaMensal(Number(e.target.value))}
                         placeholder="Renda Mensal"
                     />
 
