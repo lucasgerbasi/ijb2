@@ -18,9 +18,9 @@ declare global {
     image: string;
   }
   interface Familia {
+    id: number;
     statusFamilia: string;
     nomeFamilia: string;
-    id: number;
     name: string;
     renda: number;
     situacao: string;
@@ -31,7 +31,7 @@ declare global {
   interface Visit {
     nomeVoluntario: string;
     nomeFamilia: string;
-    id: number;
+    id?: number;
     name: string;
     data: string;
     relatorio: string;

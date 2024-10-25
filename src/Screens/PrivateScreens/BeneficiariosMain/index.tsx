@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "@styles/global.scss";
-// import { api } from "../../../../api";
-import { Familia, Visit } from "../../../types/global";
-// import { useAuth } from "../../../services/loginContext";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
+import { useNavigate } from "react-router-dom";
+import { Beneficiario, getBeneficiarios } from "../../../services/beneficiaries/beneficiariesApi";
+import { getVisitas } from "../../../services/beneficiaries/visitApi";
 
 export const BeneficiariosMain = () => {
   const [activeTab, setActiveTab] = useState<'familias' | 'visitas'>('familias');
   const [searchTerm, setSearchTerm] = useState('');
-  const {navigate} = useAuth();
+  const navigate = useNavigate();
 
-  const [familias, setFamilias] = useState<Familia[]>([]);
-  const [filteredFamilies, setFilteredFamilies] = useState<Familia[]>([]);
+  const [familias, setFamilias] = useState<Beneficiario[]>([]);
+  const [filteredFamilies, setFilteredFamilies] = useState<Beneficiario[]>([]);
   const [visitasData, setVisitasData] = useState<Visit[]>([]);
 
   const handleTabClick = (tab: 'familias' | 'visitas') => {
@@ -25,7 +25,7 @@ export const BeneficiariosMain = () => {
     if (!confirmDelete) return;
 
     try {
-      await api.delete(`/familias/${id}`);
+      await deleteFamilia(id)
       console.log('Item excluído com sucesso!');
       fetchData();
     } catch (err) {
@@ -38,7 +38,7 @@ export const BeneficiariosMain = () => {
     if (!confirmDelete) return;
   
     try {
-      await api.delete(`/visitas/${id}`);
+      await deleteVisita(id);
       console.log('Visita excluída com sucesso!');
       fetchData();
     } catch (err) {
@@ -69,18 +69,30 @@ export const BeneficiariosMain = () => {
   const fetchData = async () => {
     if (activeTab === 'familias') {
       try {
-        const response = await api.get("/familias");
-        console.log(response.data)
-        setFamilias(response.data);
-        setFilteredFamilies(response.data); // Atualiza o estado com as famílias recebidas
+        const response = await getBeneficiarios();
+
+        if(!response) {
+          console.log('Erro ao buscar famílias');
+          return;
+        }
+
+        console.log(response)
+        setFamilias(response);
+        setFilteredFamilies(response); // Atualiza o estado com as famílias recebidas
       } catch (err) {
         console.log("Error during fetch: " + err);
       }
     }
     if (activeTab === 'visitas') {
       try {
-        const response = await api.get("/visitas");
-        setVisitasData(response.data);
+        const response = await getVisitas();
+
+        if(!response) {
+          console.log('Erro ao buscar visitas');
+          return;
+        }
+
+        setVisitasData(response);
       } catch (err) {
         console.log("Error during fetch: " + err);
       }
@@ -106,7 +118,7 @@ export const BeneficiariosMain = () => {
             >
               DADOS
             </button>
-            <button onClick={() => deleteFamilia(item.id)} className="table-btn excluir-btn">EXCLUIR</button>
+            <button onClick={() => deleteFamilia(item.id!)} className="table-btn excluir-btn">EXCLUIR</button>
           </td>
         </tr>
       ));
@@ -128,7 +140,7 @@ export const BeneficiariosMain = () => {
             >
               DADOS
             </button>
-            <button onClick={() => deleteVisita(item.id)} className="table-btn excluir-btn">EXCLUIR</button>
+            <button onClick={() => deleteVisita(item.id!)} className="table-btn excluir-btn">EXCLUIR</button>
           </td>
         </tr>
       ));

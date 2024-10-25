@@ -5,11 +5,12 @@ import '../../../assets/styles/atualizarInformacoesVisitas.scss';
 // import { api } from "../../../../api";
 import { Navbar } from '../../../components/Navbar';
 import { Footer } from '../../../components/Footer';
+import { getVisita } from '../../../services/beneficiaries/visitApi';
 // import { useAuth } from '../../../services/loginContext';
 
 const AtualizarInformacoesVisitas = () => {
     const { id } = useParams();
-    const {navigate} = useAuth();
+    const navigate = useNavigate();
     const [nomeFamilia, setNomeFamilia] = useState('');
     const [nomeVoluntario, setNomeVoluntario] = useState('');
     const [relatorio, setRelatorio] = useState('');
@@ -19,13 +20,16 @@ const AtualizarInformacoesVisitas = () => {
     useEffect(() => {
         const fetchVisita = async () => {
             try {
-                const response = await api.get(`/visitas/${id}`);
-                const visita = response.data;
+                const visita = await getVisita(Number(id));
+
+                if(!visita) {
+                    throw new Error('Visita não encontrada');
+                }
                 
                 setNomeFamilia(visita.nomeFamilia);
                 setNomeVoluntario(visita.nomeVoluntario);
                 setRelatorio(visita.relatorio);
-                setDropdown1(visita.dropdown1);
+                setDropdown1(visita.dropdown1); // q isso??
             } catch (err) {
                 console.log('Erro ao buscar visita: ' + err);
             }

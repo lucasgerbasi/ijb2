@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import '@styles/global.scss';
 import '@styles/registroVisita.scss';
-// import { api } from "../../../../api";
-// import { useAuth } from '../../../services/loginContext';
 import { Navbar } from '../../../components/Navbar';
 import { Footer } from '../../../components/Footer';
+import { useNavigate } from 'react-router-dom';
+import { registerVisita } from '../../../services/beneficiaries/visitApi';
 
 const RegistroVisita = () => {
-    const {navigate} = useAuth();
+    const navigate = useNavigate();
 
     const [nomeBeneficiario, setNomeBeneficiario] = useState(''); 
     const [nomeVoluntario, setNomeVoluntario] = useState(''); 
@@ -22,6 +22,8 @@ const RegistroVisita = () => {
         }
 
         const data = {
+            name: nomeBeneficiario,
+            data: new Date().toISOString(), // Add appropriate date value
             nomeFamilia: nomeBeneficiario,
             relatorio,
             dropdown1,
@@ -30,7 +32,7 @@ const RegistroVisita = () => {
         };
 
         try {
-            await api.post('/visitas', data);
+            await registerVisita(data);
             if(location.pathname.includes("dashboard")) {
                 navigate('/dashboard/beneficiarios');
             } else {
