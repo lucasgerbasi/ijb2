@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "@styles/global.scss";
-import { Navbar } from "../../../components/Navbar";
-import { Footer } from "../../../components/Footer";
+import "@styles/beneficiarios.scss";
 import { useNavigate } from "react-router-dom";
 import { Beneficiario, getBeneficiarios } from "../../../services/beneficiaries/beneficiariesApi";
 import { getVisitas } from "../../../services/beneficiaries/visitApi";
@@ -20,12 +19,12 @@ export const BeneficiariosMain = () => {
     setSearchTerm('');
   };
 
-  const deleteFamilia = async (id: number) => {
+  const deleteBeneficiario = async (id: number) => {
     const confirmDelete = window.confirm('Você tem certeza que deseja excluir este item?');
     if (!confirmDelete) return;
 
     try {
-      await deleteFamilia(id)
+      await deleteBeneficiario(id)
       console.log('Item excluído com sucesso!');
       fetchData();
     } catch (err) {
@@ -118,7 +117,7 @@ export const BeneficiariosMain = () => {
             >
               DADOS
             </button>
-            <button onClick={() => deleteFamilia(item.id!)} className="table-btn excluir-btn">EXCLUIR</button>
+            <button onClick={() => deleteBeneficiario(item.id!)} className="table-btn excluir-btn">EXCLUIR</button>
           </td>
         </tr>
       ));
@@ -151,9 +150,6 @@ export const BeneficiariosMain = () => {
   
   return (
     <div className="beneficiarios-page">
-      <div>
-        < Navbar />
-      </div>
       <div className="dashboard-header">
         <div className="left-section">
           <h1 className="subtitle">Dashboard</h1>
@@ -194,9 +190,6 @@ export const BeneficiariosMain = () => {
             {renderTableData()}
           </tbody>
         </table>
-      </div>
-      <div>
-        < Footer />
       </div>
     </div>
   );

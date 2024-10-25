@@ -3,8 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '@styles/global.scss';
 import '../../../assets/styles/atualizarInformacoesVisitas.scss';
 // import { api } from "../../../../api";
-import { Navbar } from '../../../components/Navbar';
-import { Footer } from '../../../components/Footer';
 import { getVisita } from '../../../services/beneficiaries/visitApi';
 // import { useAuth } from '../../../services/loginContext';
 
@@ -61,9 +59,6 @@ const AtualizarInformacoesVisitas = () => {
 
     return (
         <div className="atualizar-informacoes-visitas">
-            <div>
-                <Navbar />
-            </div>
             <h1 className="subtitle">Atualizar Informações da Visita</h1>
             <p className="description">
                 Preencha os campos abaixo para atualizar as informações da visita.
@@ -124,9 +119,6 @@ const AtualizarInformacoesVisitas = () => {
                         <button onClick={handleDiscard} className="button discard-btn">DESCARTAR</button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <Footer />
             </div>
         </div>
     );

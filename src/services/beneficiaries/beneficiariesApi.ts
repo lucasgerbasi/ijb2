@@ -36,13 +36,13 @@ const api = axios.create({
 
 export const registerBeneficario = async (data: Beneficiario, members?: FamiliarMember[]) => {
     try {
-        const benefResponse = await api.post<Beneficiario>('/register/beneficiario', data);
+        const benefResponse = await api.post<Beneficiario>('/beneficiario', data);
         
         const membersResponse: FamiliarMember[] = [];
 
         if(members && members?.length !== 0) {
             members.forEach(async (member) => {
-                const response = await api.post<FamiliarMember>(`/register/familiar/${benefResponse.data.id!}`, member);
+                const response = await api.post<FamiliarMember>(`/registro/familiar/${benefResponse.data.id!}`, member);
                 membersResponse.push(response.data);
             });
         }
@@ -75,7 +75,7 @@ export interface Filters {
 export const getBeneficiarios = async (page: number = 1, filters?: Filters) => {
     try {
         const queryParams = new URLSearchParams(filters as any).toString();
-        const response = await api.get<Beneficiario[]>(`/beneficiarios?${queryParams}`);
+        const response = await api.get<Beneficiario[]>(`/beneficiario?${queryParams}`);
         return response.data.slice((page - 1) * 10, page * 10);
     } catch (err) {
         console.log('Erro durante a busca: ' + err);

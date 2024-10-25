@@ -2,8 +2,6 @@ import { useState } from 'react';
 import '@styles/global.scss';
 import '@styles/registro.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Navbar } from '../../../components/Navbar';
-import { Footer } from '../../../components/Footer';
 import { registerBeneficario } from '../../../services/beneficiaries/beneficiariesApi';
 
 const Registro = () => {
@@ -115,9 +113,6 @@ const Registro = () => {
 
     return (
         <div className="registro">
-            <div>
-                <Navbar />
-            </div>
             <h1 className="subtitle">Registro</h1>
             <p className="description">
                 Por favor, preencha os detalhes abaixo para registrar uma família no programa de assistência habitacional.
@@ -242,9 +237,6 @@ const Registro = () => {
                         <button onClick={resetForm} className="button discard-btn">DESCARTAR</button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <Footer />
             </div>
         </div>
     );

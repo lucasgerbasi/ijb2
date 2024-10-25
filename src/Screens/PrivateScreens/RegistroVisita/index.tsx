@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import '@styles/global.scss';
 import '@styles/registroVisita.scss';
-import { Navbar } from '../../../components/Navbar';
-import { Footer } from '../../../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import { registerVisita } from '../../../services/beneficiaries/visitApi';
 
@@ -58,9 +56,6 @@ const RegistroVisita = () => {
 
     return (
         <div className="registro-visita">
-            <div>
-                <Navbar />
-            </div>
             <h1 className="subtitle">Registro de Visita</h1>
             <p className="description">
                 Preencha os campos abaixo para registrar uma visita.
@@ -121,9 +116,6 @@ const RegistroVisita = () => {
                         <button onClick={resetForm} className="button discard-btn">DESCARTAR</button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <Footer />
             </div>
         </div>
     );

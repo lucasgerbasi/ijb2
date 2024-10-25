@@ -3,8 +3,6 @@ import '@styles/atualizarInformacoes.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { Navbar } from '../../../components/Navbar';
-import { Footer } from '../../../components/Footer';
 import { getBeneficiario } from '../../../services/beneficiaries/beneficiariesApi';
 
 function isAxiosError(error: unknown): error is AxiosError {
@@ -149,9 +147,6 @@ const AtualizarInformacoes = () => {
 
     return (
         <div className="atualizar-informacoes">
-            <div>
-                < Navbar />
-            </div>
             <h1 className="subtitle">Atualizar Informações da Família</h1>
             <p className="description">
                 Preencha os campos abaixo para atualizar as informações da família.
@@ -276,7 +271,6 @@ const AtualizarInformacoes = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

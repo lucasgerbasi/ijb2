@@ -36,11 +36,6 @@ declare global {
     data: string;
     relatorio: string;
   }
-  interface UserBen {
-    email: string;
-    password: string;
-    role: 'BENEFICIARIO' | 'VOLUNTARIO' | 'ADMIN';
-  }
 
 }
 
